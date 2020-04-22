@@ -1,4 +1,4 @@
-# kb
+![kb](assets/kb.png)
 
 Manage your keyboard layouts easily with Rust & setxkbmap.
 
