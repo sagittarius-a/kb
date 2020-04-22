@@ -1,0 +1,10 @@
+[package]
+name = "kb"
+version = "1.0.0"
+authors = ["Sagittarius-a <humnoplease@no.pe>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clap = "2"
