@@ -110,7 +110,7 @@ fn set_layout(layout: &str) {
 
 /// Manage command line arguments
 fn manage_args() -> ArgMatches<'static> {
-    let matches = App::new("kb")
+    App::new("kb")
         .version("1.0,0")
         .author("Sagittarius-a")
         .about("Manage your keyboard layouts easily with Rust & setxkbmap.")
@@ -140,8 +140,7 @@ fn manage_args() -> ArgMatches<'static> {
                 .help("Get the current keyboard layout")
                 .takes_value(false),
         )
-        .get_matches();
-    matches
+        .get_matches()
 }
 
 fn main() {
