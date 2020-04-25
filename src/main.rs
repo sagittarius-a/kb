@@ -25,7 +25,7 @@ fn next_layout() {
             }
         }
         Err(_) => {
-            for i in ACTIVATED_LAYOUTS.iter() {
+            for i in &ACTIVATED_LAYOUTS {
                 layouts.push((*i).to_string());
             }
         }
@@ -33,12 +33,11 @@ fn next_layout() {
 
     // Find the current layout amongst layouts available if any. Exit otherwise.
     let current = get_layout();
-    let index = match layouts.iter().position(|e| e == &current) {
-        Some(l) => l,
-        None => {
-            eprintln!("Current layout not found in available layouts. Exiting");
-            return;
-        }
+    let index = if let Some(current_layout) = layouts.iter().position(|e| e == &current) {
+        current_layout
+    } else {
+        eprintln!("Current layout not found in available layouts. Exiting");
+        return;
     };
 
     // Apply the new keyboard layout
@@ -49,7 +48,7 @@ fn next_layout() {
 }
 
 /// Write the current layout value to disk. This function does not support the '~'
-/// KEYBOARD_LAYOUT_FILE environment variable
+/// `KEYBOARD_LAYOUT_FILE` environment variable
 fn write_layout(layout: &str) {
     // Fetch home directory
     let home_key = "HOME";
@@ -58,7 +57,7 @@ fn write_layout(layout: &str) {
         Ok(val) => home = val,
         Err(_e) => {
             eprintln!("Could not fetch HOME environment variable");
-            return
+            return;
         }
     }
 
