@@ -8,6 +8,7 @@ use std::str;
 extern crate clap;
 use clap::{App, Arg, ArgMatches};
 
+/// Default activated layouts
 const ACTIVATED_LAYOUTS: [&str; 2] = ["us", "fr"];
 
 /// Set the layout to the next layout available
@@ -19,25 +20,24 @@ fn next_layout() {
     let mut layouts = Vec::new();
     match env::var(key) {
         Ok(val) => {
-            for i in val.split(",").collect::<Vec<&str>>() {
+            for i in val.split(',').collect::<Vec<&str>>() {
                 layouts.push(i.to_string());
             }
         }
         Err(_) => {
-            for i in ACTIVATED_LAYOUTS.iter() {
-                layouts.push(i.to_string());
+            for i in &ACTIVATED_LAYOUTS {
+                layouts.push((*i).to_string());
             }
         }
     }
 
     // Find the current layout amongst layouts available if any. Exit otherwise.
     let current = get_layout();
-    let index = match layouts.iter().position(|e| e == &current) {
-        Some(l) => l,
-        None => {
-            eprintln!("Current layout not found in available layouts. Exiting");
-            return;
-        }
+    let index = if let Some(current_layout) = layouts.iter().position(|e| e == &current) {
+        current_layout
+    } else {
+        eprintln!("Current layout not found in available layouts. Exiting");
+        return;
     };
 
     // Apply the new keyboard layout
@@ -48,14 +48,17 @@ fn next_layout() {
 }
 
 /// Write the current layout value to disk. This function does not support the '~'
-/// KEYBOARD_LAYOUT_FILE environment variable
+/// `KEYBOARD_LAYOUT_FILE` environment variable
 fn write_layout(layout: &str) {
     // Fetch home directory
-    let key = "HOME";
+    let home_key = "HOME";
     let home;
-    match env::var(key) {
-        Ok(val) => home = val.to_string(),
-        Err(_) => panic!("Could not fetch HOME environment variable"),
+    match env::var(home_key) {
+        Ok(val) => home = val,
+        Err(_e) => {
+            eprintln!("Could not fetch HOME environment variable");
+            return;
+        }
     }
 
     let default_location = Path::new(&home).join(".layout");
@@ -64,13 +67,13 @@ fn write_layout(layout: &str) {
     let key = "KEYBOARD_LAYOUT_FILE";
     let filepath;
     match env::var(key) {
-        Ok(val) => filepath = String::from(val.to_string()),
-        Err(_) => filepath = String::from(default_location.to_str().unwrap()),
+        Ok(val) => filepath = val,
+        Err(_e) => filepath = String::from(default_location.to_str().unwrap()),
     }
 
     let mut buffer = File::create(Path::new(&filepath)).unwrap();
 
-    buffer.write(layout.as_bytes()).unwrap();
+    buffer.write_all(layout.as_bytes()).unwrap();
 }
 
 /// Get the current keyboard layout
@@ -83,7 +86,7 @@ fn get_layout() -> String {
     let mut current_layout = "";
     for line in str::from_utf8(&output.stdout)
         .unwrap()
-        .split("\n")
+        .split('\n')
         .collect::<Vec<&str>>()
     {
         if line.contains("layout") {
