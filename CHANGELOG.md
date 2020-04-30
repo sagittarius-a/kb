@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [x.x.x] - Unreleased
+### Added
+- Add some documentation about configuration thanks to environment variables
+
 ## [1.1.0] - 2020-04-30
 ### Changed
 - Refactored kb in order to hopefully use a more idiomatic Rust code
