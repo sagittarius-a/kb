@@ -1,6 +1,6 @@
 [package]
 name = "kb"
-version = "1.0.1"
+version = "1.1.0"
 authors = ["Sagittarius-a <humnoplease@no.pe>"]
 edition = "2018"
 

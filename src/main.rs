@@ -158,7 +158,7 @@ fn set_layout(layout: &str) -> Result<()> {
 /// Manage command line arguments
 fn manage_args() -> ArgMatches<'static> {
     App::new("kb")
-        .version("1.0.1")
+        .version("1.1.0")
         .author("Sagittarius-a")
         .about("Manage your keyboard layouts easily with Rust & setxkbmap.")
         .arg(
