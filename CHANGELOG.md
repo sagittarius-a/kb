@@ -1,9 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [x.x.x] - Unreleased
+## [1.2.0] - 2020-01-05
 ### Added
 - Add some documentation about configuration thanks to environment variables
+- Add desktop notifications feature
 
 ## [1.1.0] - 2020-04-30
 ### Changed
