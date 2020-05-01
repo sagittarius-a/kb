@@ -10,13 +10,15 @@ use std::str;
 extern crate clap;
 use clap::{App, Arg, ArgMatches};
 
+use notify_rust::{Notification, Timeout};
+
 /// Default activated layouts
 const ACTIVATED_LAYOUTS: [&str; 2] = ["us", "fr"];
 
 /// Set the layout to the next layout available
 /// It will use a predefined set of layouts if no configuration is found in the
 /// LAYOUTS environment variable.
-fn next_layout() -> Result<()> {
+fn next_layout(quiet: bool) -> Result<()> {
     // Check if user supplied a set of layouts different than the default one
     let key = "LAYOUTS";
     let mut layouts = Vec::new();
@@ -45,8 +47,8 @@ fn next_layout() -> Result<()> {
 
     // Apply the new keyboard layout
     match index {
-        x if x == layouts.len() - 1 => set_layout(&layouts[0])?,
-        _ => set_layout(&layouts[index + 1])?,
+        x if x == layouts.len() - 1 => set_layout(&layouts[0], quiet)?,
+        _ => set_layout(&layouts[index + 1], quiet)?,
     };
 
     Ok(())
@@ -129,7 +131,7 @@ fn get_layout() -> Result<String> {
 }
 
 /// Set the keyboard layout to a user specified value
-fn set_layout(layout: &str) -> Result<()> {
+fn set_layout(layout: &str, quiet: bool) -> Result<()> {
     let command = "setxkbmap";
     let cmd = match Command::new(command).arg(layout).output() {
         Ok(s) => s,
@@ -144,6 +146,14 @@ fn set_layout(layout: &str) -> Result<()> {
     // Make sure the command returned a 0 exit code
     if cmd.status.success() {
         write_layout(layout)?;
+        if !quiet {
+            Notification::new()
+                .summary("kb")
+                .body(format!("Keyboard layout set to '{}'", layout).as_str())
+                .timeout(Timeout::Milliseconds(2000)) //milliseconds
+                .show()
+                .unwrap();
+        }
         Ok(())
     } else {
         Err(anyhow!(
@@ -158,7 +168,7 @@ fn set_layout(layout: &str) -> Result<()> {
 /// Manage command line arguments
 fn manage_args() -> ArgMatches<'static> {
     App::new("kb")
-        .version("1.1.0")
+        .version("1.2.0")
         .author("Sagittarius-a")
         .about("Manage your keyboard layouts easily with Rust & setxkbmap.")
         .arg(
@@ -181,6 +191,13 @@ fn manage_args() -> ArgMatches<'static> {
                 .takes_value(false),
         )
         .arg(
+            Arg::with_name("quiet")
+                .short("q")
+                .long("quiet")
+                .help("Disable desktop notifications")
+                .takes_value(false),
+        )
+        .arg(
             Arg::with_name("get-layout")
                 .short("g")
                 .long("get")
@@ -192,13 +209,14 @@ fn manage_args() -> ArgMatches<'static> {
 
 fn main() -> Result<()> {
     let matches = manage_args();
+    let quiet: bool = matches.is_present("quiet");
 
     if matches.is_present("get-layout") {
         Ok(println!("{}", get_layout()?))
     } else if let Some(layout) = matches.value_of("set-layout") {
-        set_layout(layout)
+        set_layout(layout, quiet)
     } else if matches.is_present("next-layout") {
-        next_layout()
+        next_layout(quiet)
     } else {
         Ok(println!("{}", get_layout()?))
     }

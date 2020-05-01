@@ -1,6 +1,6 @@
 [package]
 name = "kb"
-version = "1.1.0"
+version = "1.2.0"
 authors = ["Sagittarius-a <humnoplease@no.pe>"]
 edition = "2018"
 
@@ -9,3 +9,4 @@ edition = "2018"
 [dependencies]
 clap = "2"
 anyhow = "1.0"
+notify-rust = "3.6.3"
