@@ -18,7 +18,7 @@ I'm sorry for the terrible Rust. I mean it.
 ## Usage
 
 ```sh
-kb 1.2.0
+kb 2.0.0
 Sagittarius-a
 Manage your keyboard layouts easily with Rust & setxkbmap.
 

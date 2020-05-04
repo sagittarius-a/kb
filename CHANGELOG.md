@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.0.0] - 2020-04-05
+### Changed
+- Turn kb into a library crate
+- Add some tests for kb crate
+
 ## [1.2.0] - 2020-01-05
 ### Added
 - Add some documentation about configuration thanks to environment variables
