@@ -18,7 +18,7 @@ I'm sorry for the terrible Rust. I mean it.
 ## Usage
 
 ```sh
-kb 1.0.1
+kb 2.0.0
 Sagittarius-a
 Manage your keyboard layouts easily with Rust & setxkbmap.
 
@@ -30,6 +30,7 @@ FLAGS:
     -h, --help       Prints help information
     -n, --next       Set the current keyboard layout to the next layout available. Read the LAYOUTS environment
                      variable. Values must be coma separated, such as 'us,fr'.
+    -q, --quiet      Disable desktop notifications
     -V, --version    Prints version information
 
 OPTIONS:
@@ -43,7 +44,7 @@ options below:
 
 - `LAYOUTS`: Define a set of layouts available. They must be coma separated, such as 'us,ca' or 'es,pl,us'. One can set it with the command `export LAYOUTS="us,ca,es,pl"`.
 
-- `KEYBOARD_LAYOUT_FILE`: Define the path of the containing the current layout.
+- `KEYBOARD_LAYOUT_FILE`: Define the path of the containing the current layout. It does not support the ~ character, so use a full path to avoid any issue.
 
 ## Installation
 
