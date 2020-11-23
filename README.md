@@ -8,8 +8,8 @@ I wanted to write a bit of Rust, so I ported a Python script I wrote to easily
 manage my keyboard layouts.
 
 Since I need to switch keyboard layouts quite often (when I do not have a
-custom X11 layout installed), I wrote a wrapper around setxkbmap to switch from
-keybaord layout easily.
+custom X11 layout installed), I wrote a wrapper around `setxkbmap` to switch from several
+keyboard layouts easily.
 
 I designed this utility to be integrated in my xmobar configuration.
 
@@ -42,9 +42,9 @@ OPTIONS:
 `kb` is configured thanks to environment variables. Find the list of available
 options below:
 
-- `LAYOUTS`: Define a set of layouts available. They must be coma separated, such as 'us,ca' or 'es,pl,us'. One can set it with the command `export LAYOUTS="us,ca,es,pl"`.
+- `LAYOUTS`: Define a set of layouts available. They must be coma separated, such as **'us,ca'** or **'es,pl,us'**. One can set it with the command `export LAYOUTS="us,ca,es,pl"`.
 
-- `KEYBOARD_LAYOUT_FILE`: Define the path of the containing the current layout. It does not support the ~ character, so use a full path to avoid any issue.
+- `KEYBOARD_LAYOUT_FILE`: Define the path of the file containing the current layout. It does not support the `~` character, so use a full path to avoid any issue.
 
 ## Installation
 
